@@ -1,8 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
 import { ShiftMap, ShiftType, ShiftConfig } from '../types';
 
-// Initialize Gemini Client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// REMOVED top-level initialization to prevent crash on startup
+// const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+// Helper to check status
+export const hasApiKey = !!process.env.API_KEY;
 
 export const analyzeSchedule = async (
   shifts: ShiftMap, 
@@ -10,17 +13,21 @@ export const analyzeSchedule = async (
   shiftConfigs: Record<ShiftType, ShiftConfig>
 ): Promise<string> => {
   try {
-    if (!process.env.API_KEY) {
-      return "請先設定 Gemini API Key 才能使用 AI 助理。\n\n請在 Vercel 設定環境變數：API_KEY";
+    const apiKey = process.env.API_KEY;
+
+    if (!apiKey) {
+      return "請先設定 Gemini API Key 才能使用 AI 助理。\n\n請在 Vercel/Netlify 設定環境變數：VITE_API_KEY";
     }
 
-    // Filter shifts for the current month context to save tokens and improve relevance
+    // Lazy initialization - only create client when needed
+    const ai = new GoogleGenAI({ apiKey });
+
+    // Filter shifts for the current month context
     const relevantShifts = Object.entries(shifts)
       .filter(([date]) => date.startsWith(currentMonthStr))
-      .map(([date, type]) => `${date}: ${shiftConfigs[type].label}`) // Use dynamic labels
+      .map(([date, type]) => `${date}: ${shiftConfigs[type].label}`)
       .join('\n');
 
-    // Create a legend for the AI so it knows what the custom labels mean in context of standard shift work
     const legend = Object.values(shiftConfigs)
       .filter(c => c.id !== ShiftType.OFF)
       .map(c => `${c.label} (${c.id})`)
