@@ -1,11 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { ShiftMap, ShiftType, ShiftConfig } from '../types';
 
-// REMOVED top-level initialization to prevent crash on startup
-// const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 // Helper to check status
-export const hasApiKey = !!process.env.API_KEY;
+// In Vite, we use import.meta.env instead of process.env
+export const hasApiKey = !!import.meta.env.VITE_API_KEY;
 
 export const analyzeSchedule = async (
   shifts: ShiftMap, 
@@ -13,7 +11,7 @@ export const analyzeSchedule = async (
   shiftConfigs: Record<ShiftType, ShiftConfig>
 ): Promise<string> => {
   try {
-    const apiKey = process.env.API_KEY;
+    const apiKey = import.meta.env.VITE_API_KEY;
 
     if (!apiKey) {
       return "請先設定 Gemini API Key 才能使用 AI 助理。\n\n請在 Vercel/Netlify 設定環境變數：VITE_API_KEY";
