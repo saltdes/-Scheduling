@@ -10,6 +10,10 @@ export const analyzeSchedule = async (
   shiftConfigs: Record<ShiftType, ShiftConfig>
 ): Promise<string> => {
   try {
+    if (!process.env.API_KEY) {
+      return "請先設定 Gemini API Key 才能使用 AI 助理。\n\n請在 Vercel 設定環境變數：API_KEY";
+    }
+
     // Filter shifts for the current month context to save tokens and improve relevance
     const relevantShifts = Object.entries(shifts)
       .filter(([date]) => date.startsWith(currentMonthStr))
