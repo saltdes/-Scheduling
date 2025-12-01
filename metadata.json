@@ -1,0 +1,5 @@
+{
+  "name": "排班大師 (ShiftMaster)",
+  "description": "A mobile-first shift scheduling application designed for nurses and shift workers. Features include intuitive calendar management for Day, Evening, Night, and Leave shifts, statistical analysis, and an AI assistant for schedule optimization.",
+  "requestFramePermissions": []
+}

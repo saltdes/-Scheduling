@@ -1,0 +1,21 @@
+{
+  "short_name": "排班大師",
+  "name": "排班大師 ShiftMaster",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3652/3652191.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3652/3652191.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "orientation": "portrait"
+}
